@@ -1,0 +1,50 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    "Description" : "HTTPS - Security Group for Route53 Health - https checks",
+    "Parameters" : 
+    { 
+    	"VPC" : 
+    	{
+    		"Type" : "AWS::EC2::VPC::Id",
+    		"Description" : "VPC where the Security Group will belong"
+    	},
+    	"Name" : 
+    	{
+    		"Type" : "String",
+    		"Description" : "Name Tag of the Security Group"
+    	},
+    	"Description" : 
+    	{
+    		"Type" : "String",
+    		"Description" : "Description Tag of the Security Group"
+    	}
+    },
+    "Resources" : 
+    {
+    	"Route53SG" : 
+    	{
+    		"Type" : "AWS::EC2::SecurityGroup",
+    		"Properties" : 
+    		{
+    			"GroupDescription" : {"Ref" : "Description"},
+    			"VpcId" : { "Ref" : "VPC" },
+                "SecurityGroupIngress" : [
+                    {
+                        "IpProtocol" : "tcp",
+                        "CidrIp" : "0.0.0.0/0",
+                        "FromPort" : "22",
+                        "ToPort" : "22"
+                    }
+                ]
+    		}
+    	}
+    },
+    "Outputs" : 
+    {
+        "SecurityGroupID" : 
+        {
+            "Description" : "Security Group ID",
+            "Value" : { "Ref" : "Route53SG" }
+        }
+    }
+}
